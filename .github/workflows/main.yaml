@@ -26,3 +26,19 @@ jobs:
         run: |
           set -e
           printf '%s\n' '${{ steps.import-scan.outputs.response }}'
+
+      - name: Publish snyk test
+        id: synk
+        uses: ivanamat/defectdojo-import-scan@v1
+        with:
+          token: ${{ secrets.DEFECTOJO_TOKEN }}
+          defectdojo_url: ${{ secrets.DEFECTOJO_URL }}
+          file: zap-web.xml
+          scan_type: Snyk Scan
+          engagement: 1
+     
+      - name: Show response
+        run: |
+         set -e
+         printf '%s\n' '${{ steps.snyk.outputs.response }}'
+ 
