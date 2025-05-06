@@ -85,4 +85,6 @@ python evalution.py --url ${{ secrets.DEFECTOJO_URL }} --api-key ${{ secrets.DEF
 
 Go to defectdojo url dashboard click on view finding details then click on the three dot icon in any of the findings click on edit  scroll down find `false positive` and click on the check box and also you can uncheck the `Active` option then click  `Finished` there are other ways to convert into false positive also please explore that options.
 
+### Enable deduplications
 
+Go to Configuration and then click to `System Settings` under `System Settings` section enable `Deduplicate findings` and `Delete duplicates` and we can set `Max Duplicates`  to the desired value I have set `2` for now, scroll down and hit `Submit`. 
