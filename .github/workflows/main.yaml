@@ -3,7 +3,7 @@ name: Defect dojo integration and scanner
 on:
   push:
     branches:
-      - main
+      - dev
 
 jobs:
   integrate:
@@ -35,7 +35,7 @@ jobs:
           defectdojo_url: ${{ secrets.DEFECTOJO_URL }}
           file: zap-web.xml
           scan_type: Snyk Scan
-          engagement: 1
+          engagement: 2
      
       - name: Show response
         run: |

@@ -1,0 +1,49 @@
+
+
+Security Report
+
+=====================================
+
+Rules: 
+https://docs.bearer.com/reference/rules [v0.48.1]
+
+Language    Default Rules  Custom Rules  Files  
+Python      88             0             1497   
+JavaScript  87             0             1      
+
+
+HIGH: Unsanitized dynamic input in file path [CWE-22]
+https://docs.bearer.com/reference/rules/python_lang_path_traversal
+To ignore this finding, run: bearer ignore add 938b7a452a2c76a2b5c48dc010373fc0_0
+
+File: defect_dojo_api.py:394
+
+ 394         with open(report_file, 'rb') as f:
+
+HIGH: Unsanitized dynamic input in file path [CWE-22]
+https://docs.bearer.com/reference/rules/python_lang_path_traversal
+To ignore this finding, run: bearer ignore add 938b7a452a2c76a2b5c48dc010373fc0_1
+
+File: defect_dojo_api.py:441
+
+ 441                         with open(report_file, 'rb') as f2:
+
+HIGH: Unsanitized dynamic input in file path [CWE-22]
+https://docs.bearer.com/reference/rules/python_lang_path_traversal
+To ignore this finding, run: bearer ignore add e2c9f369a0c038b88fcdcf38742b74f6_0
+
+File: defect_dojo_import_scan.py:111
+
+ 111     with open(scan_file, 'rb') as f:
+=====================================
+
+175 checks, 3 findings
+
+CRITICAL: 0
+HIGH: 3 (CWE-22)
+MEDIUM: 0
+LOW: 0
+WARNING: 0
+
+Need help or want to discuss the output? Join the Community https://discord.gg/eaHZBJUXRF
+

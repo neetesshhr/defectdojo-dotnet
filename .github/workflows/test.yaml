@@ -1,0 +1,87 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-report:
+    runs-on: defectdojo
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      
+      - name: Clone Juice clone repo
+        run: |
+          git clone https://github.com/juice-shop/juice-shop
+
+      - name: Run Bearer CLI Scan
+        run: |
+          bearer scan juice-shop --format sarif --output bearer-report.sarif || true 
+
+      - name: Upload Bearer report to Defect Dojo
+        run: |
+          python3 -m venv .defectdojoenv
+          . .defectdojoenv/bin/activate
+          pip install requests
+          python upload_to_defectdojo.py --file bearer-report.sarif --engagement 2 --scan-type "SARIF" --close-old-findings --deduplication-on-engagement --host  ${{ secrets.DEFECTOJO_URL }} --api-key ${{ secrets.DEFECTOJO_TOKEN }} 
+          deactivate
+          rm -rf bearer-report.sarif
+
+      - name: Bandit scan
+        run: |
+          
+          . .defectdojoenv/bin/activate
+          pip install bandit
+          bandit -r juice-shop -f json -o bandit_report.json || echo "Bandit scan successful"  
+          deactivate        
+
+
+      - name: Import Bandit to defectdojo
+        run: |
+          . .defectdojoenv/bin/activate
+          pip install requests
+          python upload_to_defectdojo.py --file bandit_report.json --engagement 1 --scan-type "Bandit Scan" --host ${{ secrets.DEFECTOJO_URL }} --api-key ${{ secrets.DEFECTOJO_TOKEN }} 
+          deactivate
+          rm -rf bandit_report.json 
+
+      - name: Install  Snyk
+        run: |
+          npm install -g snyk
+
+      - name: Authenticate with Snyk
+        run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
+      - name: Run Snyk Test
+        run: |
+          cd juice-shop
+          snyk test --sarif-file-output=snyk_report.sarif
+
+      - name: Upload Snyk report to defect dojo
+        run: |
+          . .defectdojoenv/bin/activate
+          pip install requests
+          python upload_to_defectdojo.py --file juice-shop/snyk_report.sarif --engagement 3 --scan-type "SARIF" --host ${{ secrets.DEFECTOJO_URL }} --api-key ${{ secrets.DEFECTOJO_TOKEN }} 
+          deactivate
+          rm -rf snyk_report.sarif
+
+  evaluate:
+    runs-on: defectdojo
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: Run test Evaluations
+        run: |
+          python3 -m venv .defectdojoenv
+          . .defectdojoenv/bin/activate
+          pip install requests
+          python evalution.py --url ${{ secrets.DEFECTOJO_URL }} --api-key ${{ secrets.DEFECTOJO_TOKEN }} --product 1
+          deactivate
+
+
+          
+      
+
+
