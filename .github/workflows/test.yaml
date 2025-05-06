@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   deploy-report:
@@ -24,7 +25,7 @@ jobs:
           python3 -m venv .defectdojoenv
           . .defectdojoenv/bin/activate
           pip install requests
-          python upload_to_defectdojo.py --file bearer-report.sarif --engagement 2 --scan-type "SARIF" --close-old-findings --deduplication-on-engagement --host  ${{ secrets.DEFECTOJO_URL }} --api-key ${{ secrets.DEFECTOJO_TOKEN }} 
+          python upload_to_defectdojo.py --file bearer-report.sarif --engagement 1 --scan-type "SARIF" --close-old-findings --deduplication-on-engagement --host  ${{ secrets.DEFECTOJO_URL }} --api-key ${{ secrets.DEFECTOJO_TOKEN }} 
           deactivate
           rm -rf bearer-report.sarif
 
@@ -61,13 +62,14 @@ jobs:
         run: |
           . .defectdojoenv/bin/activate
           pip install requests
-          python upload_to_defectdojo.py --file juice-shop/snyk_report.sarif --engagement 3 --scan-type "SARIF" --host ${{ secrets.DEFECTOJO_URL }} --api-key ${{ secrets.DEFECTOJO_TOKEN }} 
+          python upload_to_defectdojo.py --file juice-shop/snyk_report.sarif --engagement 1 --scan-type "SARIF" --host ${{ secrets.DEFECTOJO_URL }} --api-key ${{ secrets.DEFECTOJO_TOKEN }} 
           deactivate
           rm -rf snyk_report.sarif
 
   evaluate:
     runs-on: defectdojo
-
+    needs: deploy-report  
+    if: ${{ always() }}   
     steps:
       - name: checkout
         uses: actions/checkout@v4
