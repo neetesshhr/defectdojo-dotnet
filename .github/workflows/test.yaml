@@ -56,7 +56,7 @@ jobs:
       - name: Run Snyk Test
         run: |
           cd juice-shop
-          npm i
+          npm i --leagacy-peer-deps
           snyk test --sarif-file-output=snyk_report.sarif
 
       - name: Upload Snyk report to defect dojo
