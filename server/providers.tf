@@ -1,4 +1,10 @@
 terraform {
+  cloud {
+    organization = "budgetbuys"
+    workspaces {
+      name = "ollama_predictor"
+    }
+  }
   required_version = ">=0.12"
 
   required_providers {
@@ -18,5 +24,19 @@ terraform {
 }
 
 provider "azurerm" {
-  features {}
+  subscription_id = var.subscriptionID
+  client_id = var.clientID
+  client_secret = var.clientSecret
+  tenant_id = var.tenantID
+
+  features {
+    
+  }
+}
+
+provider "azapi" {
+  subscription_id = var.subscriptionID
+  client_id       = var.clientID
+  client_secret   = var.clientSecret
+  tenant_id       = var.tenantID
 }

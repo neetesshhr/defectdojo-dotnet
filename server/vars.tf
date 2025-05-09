@@ -15,3 +15,25 @@ variable "username" {
   description = "The username for the local account that will be created on the new VM."
   default     = "azureadmin"
 }
+
+variable "subscriptionID" {
+  type = string
+}
+
+variable "clientID" {
+  type = string
+}
+
+variable "clientSecret" {
+  type = string
+}
+
+variable "tenantID" {
+  type = string
+}
+
+variable "vmname" {
+  type = string
+  description = "Vm name"
+  default = "ollama"
+}
