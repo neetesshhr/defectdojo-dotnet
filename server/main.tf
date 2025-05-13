@@ -106,12 +106,12 @@ resource "azurerm_linux_virtual_machine" "my_terraform_vm" {
     storage_account_type = "Premium_LRS"
   }
 
-  source_image_reference {
-    publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-noble"
-    sku       = "24_04-lts-gen2"
-    version   = "latest"
-  }
+source_image_reference {
+  publisher = "canonical"
+  offer     = "ubuntu-24_04-lts"
+  sku       = "server"
+  version   = "latest"
+}
 
   computer_name  = "hostname"
   admin_username = var.username
