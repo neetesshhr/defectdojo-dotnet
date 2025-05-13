@@ -11,6 +11,8 @@ resource "azapi_resource" "ssh_public_key" {
   location  = azurerm_resource_group.rg.location
   parent_id = azurerm_resource_group.rg.id
 
+  response_export_values = ["properties.publicKey"]
+
   body = jsonencode({
     properties = {
       publicKey = var.ssh_public_key
