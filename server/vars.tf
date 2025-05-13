@@ -1,6 +1,6 @@
 variable "resource_group_location" {
   type        = string
-  default     = "eastus"
+  default     = "westus2"
   description = "Location of the resource group."
 }
 
@@ -13,7 +13,7 @@ variable "resource_group_name_prefix" {
 variable "username" {
   type        = string
   description = "The username for the local account that will be created on the new VM."
-  default     = "azureadmin"
+  default     = "scanner"
 }
 
 variable "subscriptionID" {
@@ -35,5 +35,17 @@ variable "tenantID" {
 variable "vmname" {
   type = string
   description = "Vm name"
-  default = "ollama"
+  default = "scanner1"
+}
+
+variable "ssh_public_key" {
+  type        = string
+  description = "Your SSH public key"
+}
+
+
+variable "AZzone" {
+  type = number
+  default = 1
+  description = "Your zone id"
 }

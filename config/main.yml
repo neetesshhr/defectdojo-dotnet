@@ -1,0 +1,5 @@
+---
+- hosts: scanner
+  become: true
+  roles:
+    - bandit

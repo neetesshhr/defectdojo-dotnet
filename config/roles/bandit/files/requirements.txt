@@ -1,0 +1,15 @@
+bandit==1.8.3
+certifi==2025.4.26
+charset-normalizer==3.4.1
+defectdojo_api==1.1.4
+idna==3.10
+markdown-it-py==3.0.0
+mdurl==0.1.2
+pbr==6.1.1
+Pygments==2.19.1
+PyYAML==6.0.2
+requests==2.32.3
+rich==14.0.0
+setuptools==80.0.0
+stevedore==5.4.1
+urllib3==2.4.0
