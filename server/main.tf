@@ -105,7 +105,8 @@ resource "azurerm_linux_virtual_machine" "my_terraform_vm" {
     caching              = "ReadWrite"
     storage_account_type = "Premium_LRS"
   }
-
+  
+  custom_data = file("files/cloud-init.sh")
 source_image_reference {
   publisher = "canonical"
   offer     = "ubuntu-24_04-lts"
