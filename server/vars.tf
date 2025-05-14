@@ -50,3 +50,15 @@ variable "AZzone" {
   default = 1
   description = "Your zone id"
 }
+
+variable "wireguard_private_key" {
+  description = "WireGuard private key"
+  type        = string
+  sensitive   = true
+}
+
+variable "wireguard_peer_public_key" {
+  description = "WireGuard peer public key"
+  type        = string
+  sensitive   = true
+}

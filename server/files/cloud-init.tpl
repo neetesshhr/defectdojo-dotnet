@@ -6,11 +6,10 @@ cat <<EOF > /etc/wireguard/wg0.conf
 [Interface]
 Address = 20.0.0.4/24
 ListenPort = 51820
-PrivateKey = YB6eZxWWWGz1D3DqnVQSFE8GMyWmHCFeYxugasVkfGo=
-
+PrivateKey = ${wireguard_private_key}
 
 [Peer]
-PublicKey = 59+M5AQrC+rg2RxWb3llGHWCfmkeYHgVHn90VXSaUSM=
+PublicKey = ${wireguard_peer_public_key}
 AllowedIPs = 20.0.0.0/24
 Endpoint = 40.76.140.125:51820
 PersistentKeepalive = 25

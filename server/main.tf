@@ -106,7 +106,10 @@ resource "azurerm_linux_virtual_machine" "my_terraform_vm" {
     storage_account_type = "Premium_LRS"
   }
   
-  custom_data = file("files/cloud-init.sh")
+  custom_data = base64encode(templatefile("${path.module}/files/cloud-init.tpl", {
+    wireguard_private_key     = var.wireguard_private_key
+    wireguard_peer_public_key = var.wireguard_peer_public_key
+  }))
 source_image_reference {
   publisher = "canonical"
   offer     = "ubuntu-24_04-lts"
