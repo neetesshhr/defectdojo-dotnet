@@ -62,3 +62,8 @@ variable "wireguard_peer_public_key" {
   type        = string
   sensitive   = true
 }
+
+variable "wireguard_host_endpoint" {
+  description = "Wireguard host enpoint ip and port"
+  type = string
+}

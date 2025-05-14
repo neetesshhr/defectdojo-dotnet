@@ -11,7 +11,7 @@ PrivateKey = ${wireguard_private_key}
 [Peer]
 PublicKey = ${wireguard_peer_public_key}
 AllowedIPs = 20.0.0.0/24
-Endpoint = 40.76.140.125:51820
+Endpoint = ${wireguard_host_endpoint}
 PersistentKeepalive = 25
 EOF
 

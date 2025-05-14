@@ -109,6 +109,7 @@ resource "azurerm_linux_virtual_machine" "my_terraform_vm" {
   custom_data = base64encode(templatefile("${path.module}/files/cloud-init.tpl", {
     wireguard_private_key     = var.wireguard_private_key
     wireguard_peer_public_key = var.wireguard_peer_public_key
+    wireguard_host_endpoint   = var.wireguard_host_endpoint
   }))
 source_image_reference {
   publisher = "canonical"
