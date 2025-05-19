@@ -18,3 +18,8 @@ packages:
   - g++
   - python3.12-venv
   - unzip
+  - wget 
+  - apt-transport-https 
+  - gnupg 
+  - lsb-release
+  - docker.io

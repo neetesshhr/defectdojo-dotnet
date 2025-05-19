@@ -1,3 +1,8 @@
+- name: Run update cache
+  apt:
+    update_cache: yes
+  become: true
+
 - name: Ensure all packages are available
   apt:
     name: "{{ item }}"

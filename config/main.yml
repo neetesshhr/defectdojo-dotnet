@@ -5,13 +5,13 @@
     - group_vars/all/secrets.yml
     - group_vars/all.yml
   pre_tasks:
-    - import_tasks: tasks/nodejs.yml
-    - import_tasks: tasks/global.yml
+    # - import_tasks: tasks/nodejs.yml
+    # - import_tasks: tasks/global.yml
     - import_tasks: tasks/prepackages.yml
-    
+
   roles:
-    - bandit
-    - bearer
-    - snyk
+    # - bandit
+    # - bearer
+    # - snyk
     - trivy
     - finisher

@@ -1,3 +1,5 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # tasks file for trivy
+- name: Install trivy
+  import_tasks: install_trivy.yml
