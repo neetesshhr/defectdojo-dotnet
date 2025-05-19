@@ -1,39 +1,7 @@
-# SPDX-License-Identifier: MIT-0
 ---
-# tasks file for bandit
 
-- name: Ensure python and pip are available
-  apt:
-    name:
-      - python3-pip
-      - gcc
-      - g++
-      - python3.12-venv
-    state: present
-  become: yes
+- name: Install and configure Bandit app 
+  import_tasks: install-bandit.yml
 
-- name: Create Python3 virtual environment folder
-  file:
-    path: /opt/bandit-venv
-    state: directory
-    mode: '0755'
-  become: yes
-
-- name: Copy requirements.txt
-  copy:
-    src: requirements.txt
-    dest: /opt/bandit-venv/requirements.txt
-    mode: '0644'
-  become: yes
-
-- name: Initiate virtualenv and install requirements
-  pip:
-    virtualenv: /opt/bandit-venv
-    virtualenv_command: python3 -m venv
-    requirements: /opt/bandit-venv/requirements.txt
-  become: yes
-  vars:
-    venv_dir: /opt/bandit-venv
-    venv_python: "{{ venv_dir }}/bin/python"
-
-
+- name: Run Bandit scanner
+  import_tasks: run-bandit.yml

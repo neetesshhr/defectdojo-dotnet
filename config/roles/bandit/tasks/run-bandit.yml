@@ -1,0 +1,27 @@
+---
+
+
+- name: Scan the repo with Bandit
+  shell: |
+    /opt/bandit-venv/bin/bandit -r /home/scanner/{{ item.name }} -f json -o /home/scanner/{{ item.name }}/bandit_report.json || echo "Bandit scan failed, continuing..."
+    sleep 2
+  become: true
+  loop: "{{ repos }}"
+  notify: Check if Bandit report was created
+
+- name: Import the report to DefectDojo
+  shell: |
+    /opt/bandit-venv/bin/python /home/scanner/import_scan.py \
+      --file /home/scanner/{{ item.name }}/bandit_report.json \
+      --engagement 1 \
+      --scan-type "Bandit Scan" \
+      --host "{{ defect_dojo_url }}" \
+      --api-key "{{ defect_dojo_token }}"
+  loop: "{{ repos }}"
+  become: true
+
+
+
+  
+
+

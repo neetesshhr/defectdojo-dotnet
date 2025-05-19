@@ -1,0 +1,13 @@
+--- 
+
+# defect_dojo_url: "url_defect"
+# defect_dojo_token: "defect_dojo_token"
+# git_pat_token: "git_paT_TOKEN"
+# git_user: "user"
+
+
+temp_folder: /tmp
+repos:
+  - name: budget-buys
+  - name: linby-ui
+  - name: ollama_predictor

@@ -1,3 +1,30 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # tasks file for bearer
+- name: Install Bearer CLI
+  shell: |
+    curl -sfL https://raw.githubusercontent.com/Bearer/bearer/main/contrib/install.sh | sh
+  become: true
+
+
+- name: Bearer Scan the repo  {{ item.name }} 
+  shell: |
+    /home/scanner/bin/bearer scan /home/scanner/{{ item.name }} --format sarif --output /home/scanner/{{ item.name }}/bearer-report.sarif || echo "Bandit scan failed, continuing..."
+    sleep 2
+  become: true
+  loop: "{{ repos }}"
+  # notify: Check if Bearer report was created
+
+- name: Import the report to DefectDojo
+  shell: |
+    /opt/bandit-venv/bin/python /home/scanner/import_scan.py \
+      --file /home/scanner/{{ item.name }}/bearer-report.sarif \
+      --engagement 1 \
+      --scan-type "SARIF" \
+      --host "{{ defect_dojo_url }}" \
+      --api-key "{{ defect_dojo_token }}" 
+  loop: "{{ repos }}"
+  become: true
+  
+
+

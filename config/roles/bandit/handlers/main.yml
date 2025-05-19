@@ -1,3 +1,25 @@
-#SPDX-License-Identifier: MIT-0
+# SPDX-License-Identifier: MIT-0
 ---
 # handlers file for bandit
+
+- name: Ensure env is created
+  shell: |
+    if [ -f /opt/bandit-venv/bin/bandit ]; then
+      echo "Bandit is present in the virtual environment."
+    else
+      echo "Bandit is NOT installed!" >&2
+      exit 1
+    fi
+  args:
+    executable: /bin/bash
+
+- name: Check if Bandit report was created
+  stat:
+    path: /home/scanner/budgetbuys/bandit_report.json
+  register: bandit_report_check
+  notify: Set bandit report flag
+
+- name: Set bandit report flag
+  set_fact:
+    bandit_report_exists: "{{ bandit_report_check.stat.exists }}"
+

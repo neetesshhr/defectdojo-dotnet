@@ -1,0 +1,98 @@
+name: Build the infra
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  push:
+    branches:
+      - main
+      - dev   ### add which    branch to run
+      - feature/TC-122/deploy-build-actions
+
+env:
+  AWS_REGION: us-east-1
+  AWS_SESSION_NAME: ebsi-epd-infra
+  PULUMI_INFRA_STACK: infra
+  PULUMI_TAILSCALE_STACK: tailscale
+  DEPLOY_ENV: ecqa2
+  PULUMI_API2_STACK: api2
+  PULUMI_TRAEFIK_STACK: reverseproxy
+  ECQA_BUILD_RUNNER: ecqa-runner
+
+jobs:
+  install-packages:
+    name: Install and Configure Dependencies
+    runs-on: ecqa-runner
+    environment: staging
+    steps:
+      - name: fix permissions
+        run: |
+          sudo chown -R $(whoami):$(whoami) /home/ubuntu/actions-runner/work/platform.github/platform.github || true
+          sudo chmod -R 777 /home/ubuntu/actions-runner/work/platform.github/platform.github  || true
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Configure AWS 
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.IAMROLE_GITHUB }}
+          role-session-name: ${{ env.AWS_SESSION_NAME }}
+
+      - name: Install Pulumi CLI
+        uses: pulumi/setup-pulumi@v2
+        with:
+          pulumi-version: ^3.0.0
+
+      - name: Login to Pulumi
+        run: pulumi login
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+      
+      - name: Download and Install Packages
+        run: go mod vendor
+
+      - name: install dependencies
+        run: |
+          go mod vendor
+          sudo env "PATH=$PATH" make install
+          sudo env "PATH=$PATH" make deps
+          sudo env "PATH=$PATH" make docker-cleanup
+          
+          
+#####  Maintance  #####
+
+
+###############   BUILD ######################
+  build:
+    needs: install-packages
+    runs-on: ecqa-runner
+    steps:
+      - name: Build API Legacy image
+        run: |
+          go mod vendor
+          sudo env "PATH=$PATH" make build-public-api-ci
+
+
+      - name: BUILD API IMAGE
+        run: |
+          go mod vendor
+          sudo env "PATH=$PATH" make build-api2-ci
+      
+
+   ## Likewise add other builds also  ######    
+        
+    
+##########################    DEPLOY ###############################
+
+
+###########################      TEST ###################################
+
+ 

@@ -1,5 +1,15 @@
 ---
 - hosts: scanner
   become: true
+  vars_files:
+    - group_vars/all/secrets.yml
+    - group_vars/all.yml
+  pre_tasks:
+    - import_tasks: tasks/nodejs.yml
+    - import_tasks: tasks/global.yml
   roles:
-    - bandit
+
+    # - bandit
+    # - bearer
+    - snyk
+    - finisher

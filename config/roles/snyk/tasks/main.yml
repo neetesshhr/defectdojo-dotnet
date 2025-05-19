@@ -1,3 +1,30 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # tasks file for snyk
+- name: Install "snyk" node.js package globally.
+  community.general.npm:
+    name: snyk
+    global: true
+
+- name: Authenticate Snyk CLI 
+  shell: snyk auth {{ snyk_token }}
+
+- name: Scan Snyk
+  shell: |
+    cd /home/scanner/{{ item.name }}
+    snyk code test --sarif-file-output=/home/scanner/{{ item.name }}/snyk_report.sarif || echo true
+  become: true
+  loop: "{{ repos }}"
+
+- name: Import the report to DefectDojo
+  shell: |
+    /opt/bandit-venv/bin/python /home/scanner/import_scan.py \
+      --file /home/scanner/{{ item.name }}/snyk_report.sarif \
+      --engagement 1 \
+      --scan-type "SARIF" \
+      --host "{{ defect_dojo_url }}" \
+      --api-key "{{ defect_dojo_token }}"
+  loop: "{{ repos }}"
+  become: true
+
+

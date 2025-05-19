@@ -1,0 +1,19 @@
+---
+- name: Copy the Python report import file
+  copy:
+    src: import_scan.py
+    dest: /home/scanner/import_scan.py
+    mode: '0644'
+  become: true
+
+- name: Clone Git repo
+  git:
+    repo: "https://{{ git_pat_token }}@github.com/{{ git_user }}/{{ item.name }}"
+    dest: "/home/scanner/{{ item.name }}"
+    version: main
+    force: yes
+  loop: "{{ repos }}"
+  loop_control:
+    label: "{{ item.name }}"
+  become: true
+  # no_log: true
