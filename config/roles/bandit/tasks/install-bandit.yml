@@ -2,15 +2,7 @@
 ---
 # tasks file for bandit
 
-- name: Ensure python and pip are available
-  apt:
-    name:
-      - python3-pip
-      - gcc
-      - g++
-      - python3.12-venv
-    state: present
-  become: true
+
 
 - name: Create Python3 virtual environment folder
   file:

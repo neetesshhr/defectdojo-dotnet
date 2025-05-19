@@ -11,3 +11,10 @@ repos:
   - name: budget-buys
   - name: linby-ui
   - name: ollama_predictor
+
+packages:
+  - python3-pip
+  - gcc
+  - g++
+  - python3.12-venv
+  - unzip

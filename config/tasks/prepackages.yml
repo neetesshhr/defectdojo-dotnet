@@ -1,0 +1,7 @@
+- name: Ensure all packages are available
+  apt:
+    name: "{{ item }}"
+    state: present
+    # update_cache: yes
+  become: true
+  loop: "{{ packages }}"
